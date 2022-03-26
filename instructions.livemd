@@ -1,0 +1,22 @@
+# Identicons
+
+## Overview
+
+An identicon is a 5 X 5 Grid of Squares that is mirrored on the center. Each square is 50px by 50px so
+the identicon is 250px by 250px.
+
+<!-- livebook:{"break_markdown":true} -->
+
+![](images/identicon.png)
+
+<!-- livebook:{"break_markdown":true} -->
+
+```mermaid
+flowchart
+String --> 
+3[List of Numbers Based On String] --> 
+4[Pick Color] --> 
+5[Build Grid Of Squares] --> 
+6[Convert Grid Into Image] -->
+7[Save Image]
+```
