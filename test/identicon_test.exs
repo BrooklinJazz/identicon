@@ -5,7 +5,10 @@ defmodule IdenticonTest do
   describe "generate/1" do
     test "given brooklin generates brooklin.png" do
       assert :ok = Identicon.generate("brooklin")
-      assert {:ok, _file} = File.read("brooklin.png")
+      assert {:ok, file} = File.read("brooklin.png")
+      # assert generated contents have not changed from expected
+      assert file == File.read!("expected.png")
+      # cleanup
       assert :ok = File.rm("brooklin.png")
     end
   end

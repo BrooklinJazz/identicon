@@ -50,10 +50,12 @@ defmodule Identicon do
       Enum.with_index(row)
       |> Enum.each(fn {item, column_index} ->
         if Integer.is_even(item) do
+          {p1, p2} = points_at(column_index, row_index)
+
           :egd.filledRectangle(
             pid,
-            {column_index * 50, row_index * 50},
-            {column_index * 50 + 50, row_index * 50 + 50},
+            p1,
+            p2,
             color
           )
         end
@@ -61,6 +63,22 @@ defmodule Identicon do
     end)
 
     pid
+  end
+
+  @doc """
+  iex> Identicon.points_at(0, 0)
+  {{0, 0}, {50, 50}}
+
+  iex> Identicon.points_at(1, 0)
+  {{50, 0}, {100, 50}}
+  """
+  def points_at(column_index, row_index) do
+    start_width = column_index * 50
+    end_width = start_width + 50
+    start_height = row_index * 50
+    end_height = start_height + 50
+
+    {{start_width, start_height}, {end_width, end_height}}
   end
 
   def save_image(pid, name) do
