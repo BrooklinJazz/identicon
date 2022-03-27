@@ -2,6 +2,7 @@ defmodule Identicon do
   @moduledoc """
   Documentation for `Identicon`.
   """
+
   require Integer
 
   @doc """
@@ -45,24 +46,41 @@ defmodule Identicon do
     pid = :egd.create(250, 250)
     color = :egd.color({r, g, b})
 
-    Enum.with_index(grid)
-    |> Enum.each(fn {row, row_index} ->
-      Enum.with_index(row)
-      |> Enum.each(fn {item, column_index} ->
-        if Integer.is_even(item) do
-          {p1, p2} = points_at(column_index, row_index)
-
-          :egd.filledRectangle(
-            pid,
-            p1,
-            p2,
-            color
-          )
-        end
-      end)
-    end)
+    fill_rows(pid, color, {0, 0}, grid)
+    # Enum.each(Enum.with_index(grid), fn {row, row_index} ->
+    #   Enum.each(Enum.with_index(row), fn {item, column_index} ->
+    #     maybe_fill_point(pid, item, color, column_index, row_index)
+    #   end)
+    # end)
 
     pid
+  end
+
+  def fill_items(_pid, _color, _point, []), do: nil
+
+  def fill_items(pid, color, {x, y}, [item | items]) do
+    maybe_fill_point(pid, item, color, x, y)
+    fill_items(pid, color, {x + 1, y}, items)
+  end
+
+  def fill_rows(_pid, _color, _point, []), do: nil
+
+  def fill_rows(pid, color, {_, y}, [row | rows]) when is_list(row) do
+    fill_items(pid, color, {0, y}, row)
+    fill_rows(pid, color, {0, y + 1}, rows)
+  end
+
+  def maybe_fill_point(pid, item, color, column_index, row_index) do
+    if Integer.is_even(item) do
+      {p1, p2} = points_at(column_index, row_index)
+
+      :egd.filledRectangle(
+        pid,
+        p1,
+        p2,
+        color
+      )
+    end
   end
 
   @doc """
