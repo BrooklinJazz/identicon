@@ -74,17 +74,20 @@ defmodule IdenticonTest do
     red = :egd.color(:red)
     blue = :egd.color(:blue)
 
-    grid = [[0, 1, 0, 1, 0]]
+    grid =
+      [[0, 1, 0, 1, 0]]
+      |> Identicon.write_row()
+      |> IO.inspect()
 
-    Enum.with_index(grid)
-    |> Enum.map(fn {row, row_index} ->
-      row
-      |> Enum.with_index()
-      |> Enum.map(fn {column, column_index} ->
-        Identicon.generate_start_end(row_index, column_index)
-      end)
-    end)
-    |> IO.inspect()
+    # Enum.with_index(grid)
+    # |> Enum.map(fn {row, row_index} ->
+    #   row
+    #   |> Enum.with_index()
+    #   |> Enum.map(fn {column, column_index} ->
+    #     Identicon.generate_start_end(row_index, column_index)
+    #   end)
+    # end)
+    # |> IO.inspect()
 
     # list2 =
     #   Enum.map(Enum.with_index(list1), fn {item, x} ->
@@ -102,6 +105,12 @@ defmodule IdenticonTest do
 
     # image_binary = :egd.render(pid)
     # :egd.save(image_binary, "#{System.unique_integer()}.png")
+  end
+
+  test "Generates an identicon" do
+    "billy"
+    |> Identicon.generate_identicon()
+    |> IO.inspect()
   end
 end
 
